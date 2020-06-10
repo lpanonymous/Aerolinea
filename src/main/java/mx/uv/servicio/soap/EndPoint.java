@@ -5,16 +5,24 @@ import org.example.nose.ShowSelectedFlightRequest;
 import org.example.nose.ShowSelectedFlightResponse;
 import org.example.nose.DeleteFlightRequest;
 import org.example.nose.DeleteFlightResponse;
+import org.example.nose.DeleteReservationRequest;
+import org.example.nose.DeleteReservationResponse;
 import org.example.nose.DisplayAllFlightRequest;
 import org.example.nose.DisplayAllFlightResponse;
+import org.example.nose.DisplayAllReservationRequest;
+import org.example.nose.DisplayAllReservationResponse;
 import org.example.nose.CreateFlightRequest;
 import org.example.nose.CreateFlightReservationRequest;
 import org.example.nose.CreateFlightReservationResponse;
 import org.example.nose.CreateFlightResponse;
 import org.example.nose.ReadFlightRequest;
 import org.example.nose.ReadFlightResponse;
+import org.example.nose.ReadReservationRequest;
+import org.example.nose.ReadReservationResponse;
 import org.example.nose.UpdateFlightRequest;
 import org.example.nose.UpdateFlightResponse;
+import org.example.nose.UpdateReservationRequest;
+import org.example.nose.UpdateReservationResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
@@ -83,7 +91,7 @@ public class EndPoint
 	}
 	else 
 	{
-	respuesta.setDatos("No existe referencia al vuelo de ida y vuelta");				
+	respuesta.setDatos("No existe referencia al vuelo");				
 	}		
 	return respuesta;
 	}
@@ -206,23 +214,18 @@ public class EndPoint
 			vuelo.setPrecio_tarifa_flexible(peticion.getPrecioTarifaFlexible());
 			vuelo.setPrecio_tarifa_premier(peticion.getPrecioTarifaPremier());
 			ivuelos.save(vuelo);
+			respuesta.setDatos("Vuelo actualizado correctamente");
 		}
 		else 
 		{
-			respuesta.setDatos("No existe referencia a un pasajero con esos datos");				
-		}
-		
-		ivuelos.deleteById(peticion.getId());
-		
-		ivuelos.save(vuelo);			
-		
-		respuesta.setDatos("Vuelo de ida y vuelta actualizado correctamente");
+			respuesta.setDatos("No existe referencia a un vuelo con esos datos");				
+		}		
 		return respuesta;
 	}
 	
 	@PayloadRoot(namespace = "http://www.example.org/nose", localPart = "DeleteFlightRequest")
 	@ResponsePayload
-	public DeleteFlightResponse edvivr(@RequestPayload DeleteFlightRequest peticion)
+	public DeleteFlightResponse dfr(@RequestPayload DeleteFlightRequest peticion)
 	{
 		DeleteFlightResponse respuesta = new DeleteFlightResponse();
 		Optional<Vuelo> vuelos; 	
@@ -234,15 +237,15 @@ public class EndPoint
 		}
 		else 
 		{
-			respuesta.setDatos("No existe referencia a un vuelo de ida y vuelta");				
+			respuesta.setDatos("No existe referencia a un vuelo");				
 		}		
-		respuesta.setDatos("Vuelo de ida y vuelta eliminado correctamente");
+		respuesta.setDatos("Vuelo eliminado correctamente");
 		return respuesta;
 	}
 	
-		///////////////////Fin CRUD Vuelos////////////////////////
-	///////////////////Inicio CRUD Vuelos////////////////////////
-	//Hola mundo
+	///////////////////Fin CRUD Vuelos//////////////////////////////////
+	
+	///////////////////Inicio CRUD Reservaciones////////////////////////
 	@Autowired
 	private IReservacion ireservaciones;
 	
@@ -261,5 +264,94 @@ public class EndPoint
 		ireservaciones.save(reservacion);
 		datos.setDatos(reservacion.toString());
 		return datos;
+	}
+	
+	@PayloadRoot(namespace = "http://www.example.org/nose", localPart = "ReadReservationRequest")
+	@ResponsePayload
+	public ReadReservationResponse rrr(@RequestPayload ReadReservationRequest peticion)
+	{
+		ReadReservationResponse respuesta = new ReadReservationResponse();
+		Optional<Reservacion> reservacion; 	
+		reservacion = ireservaciones.findById(peticion.getId());
+		
+		if(reservacion.isPresent()) 
+		{
+			respuesta.setDatos(reservacion.get().toString());
+		}
+		else 
+		{
+			respuesta.setDatos("No existe referencia a la reservación");				
+		}		
+			return respuesta;
+	}
+	
+	@PayloadRoot(namespace = "http://www.example.org/nose", localPart = "DisplayAllReservationRequest")
+	@ResponsePayload
+	public DisplayAllReservationResponse darr(@RequestPayload DisplayAllReservationRequest peticion)
+	{	
+		DisplayAllReservationResponse respuesta = new DisplayAllReservationResponse();
+		
+		Iterable<Reservacion> listaReservaciones = ireservaciones.findAll();
+		for(Reservacion lr: listaReservaciones)
+		{
+			DisplayAllReservationResponse.Datos datos = new DisplayAllReservationResponse.Datos();
+			datos.setId(lr.getId());
+			datos.setIdVuelo(lr.getId_vuelo());
+			datos.setNombreCliente(lr.getNombre_cliente());
+			datos.setNumeroTarjeta(lr.getNumero_tarjeta());
+			datos.setCodigoCvc(lr.getCodigo_cvc());
+			datos.setFechaVencimiento(lr.getFecha_vencimiento());
+			datos.setCantidad(lr.getCantidad());
+			respuesta.getDatos().add(datos);
+		}
+		return respuesta;
+		}
+	
+	@PayloadRoot(namespace = "http://www.example.org/nose", localPart = "UpdateReservationRequest")
+	@ResponsePayload
+	public UpdateReservationResponse urr(@RequestPayload UpdateReservationRequest peticion)
+	{
+		UpdateReservationResponse respuesta = new UpdateReservationResponse();
+		Optional<Reservacion> reservaciones; 	
+		reservaciones = ireservaciones.findById(peticion.getId());
+		Reservacion reservacion = new Reservacion();
+		
+		if(reservaciones.isPresent()) 
+		{
+			reservacion.setId(peticion.getId());
+			reservacion.setId_vuelo(peticion.getIdVuelo());
+			reservacion.setNombre_cliente(peticion.getNombreCliente());
+			reservacion.setNumero_tarjeta(peticion.getNumeroTarjeta());
+			reservacion.setCodigo_cvc(peticion.getCodigoCvc());
+			reservacion.setFecha_vencimiento(peticion.getFechaVencimiento());
+			reservacion.setCantidad(peticion.getCantidad());
+			ireservaciones.save(reservacion);
+			respuesta.setDatos("Reservacion actualizada correctamente");
+		}
+		else 
+		{
+			respuesta.setDatos("No existe referencia a una reservacion con esos datos");				
+		}	
+		return respuesta;
+	}
+	
+	@PayloadRoot(namespace = "http://www.example.org/nose", localPart = "DeleteReservationRequest")
+	@ResponsePayload
+	public DeleteReservationResponse drr(@RequestPayload DeleteReservationRequest peticion)
+	{
+		DeleteReservationResponse respuesta = new DeleteReservationResponse();
+		Optional<Reservacion> reservacion; 	
+		reservacion = ireservaciones.findById(peticion.getId());
+	
+		if(reservacion.isPresent()) 
+		{
+			ireservaciones.deleteById(peticion.getId());
+		}
+		else 
+		{
+			respuesta.setDatos("No existe referencia a una reservacion");				
+		}		
+		respuesta.setDatos("Reservacion eliminada correctamente");
+		return respuesta;
 	}
 }	

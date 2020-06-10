@@ -61,8 +61,8 @@ public class Reservacion
 	}
 	@Override
 	public String toString() {
-		return "id=" + id + "<br>id_vuelo:" + id_vuelo + "<br>nombre_cliente:" + nombre_cliente
-				+ "<br>numero_tarjeta:" + numero_tarjeta + "<br>fecha_vencimiento:" + fecha_vencimiento + "<br>codigo_cvc:"
-				+ codigo_cvc + "<br>cantidad:" + cantidad + "";
+		return "<p>Id de la reservación= " + id + "</p><p>Id del vuelo: " + id_vuelo + "</p><p>Nombre del cliente: " + nombre_cliente
+				+ "</p><p>Número de la tarjeta: " + numero_tarjeta + "</p><p>Fecha de vencimiento: " + fecha_vencimiento + "</p><p>Código cvc: "
+				+ codigo_cvc + "</p><p>Total: " + cantidad + "</p>";
 	}
 }

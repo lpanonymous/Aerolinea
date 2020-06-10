@@ -233,7 +233,7 @@
 		</complexType>
 	</element>
 	
-	<element name="ReadFlightReservationRequest">
+	<element name="ReadReservationRequest">
 		<complexType>
 			<sequence>
 				<element name="id" type="int"></element>
@@ -241,7 +241,7 @@
 		</complexType>
 	</element>
 	
-	<element name="ReadFlightReservationResponse">
+	<element name="ReadReservationResponse">
 		<complexType>
 			<sequence>
 				<element name="datos" type="string"></element>
@@ -249,12 +249,13 @@
 		</complexType>
 	</element>
 	
-	<element name="UpdateFlightReservationRequest">
+	<element name="UpdateReservationRequest">
 		<complexType>
 			<sequence>
+				<element name="id" type="int"></element>
 				<element name="id_vuelo" type="int"></element>
 				<element name="nombre_cliente" type="string"></element>
-				<element name="num_tarjeta" type="string"></element>
+				<element name="numero_tarjeta" type="string"></element>
 				<element name="fecha_vencimiento" type="string"></element>
 				<element name="codigo_cvc" type="int"></element>
 				<element name="cantidad" type="int"></element>
@@ -262,7 +263,7 @@
 		</complexType>
 	</element>
 	
-	<element name="UpdateFlightReservationResponse">
+	<element name="UpdateReservationResponse">
 		<complexType>
 			<sequence>
 				<element name="datos" type="string"></element>
@@ -270,7 +271,7 @@
 		</complexType>
 	</element>
 	
-	<element name="DeleteFlightReservationRequest">
+	<element name="DeleteReservationRequest">
 		<complexType>
 			<sequence>
 				<element name="id" type="int"></element>
@@ -278,10 +279,34 @@
 		</complexType>
 	</element>
 	
-	<element name="DeleteFlightReservationResponse">
+	<element name="DeleteReservationResponse">
 		<complexType>
 			<sequence>
 				<element name="datos" type="string"></element>
+			</sequence>
+		</complexType>
+	</element>
+	
+	<element name="DisplayAllReservationRequest">
+		<complexType/>
+	</element>
+	
+	<element name="DisplayAllReservationResponse">
+		<complexType>
+			<sequence>
+				<element name="datos" maxOccurs="unbounded">
+					<complexType>
+						<sequence>
+							<element name="id" type="int"></element>
+							<element name="id_vuelo" type="int"></element>
+							<element name="nombre_cliente" type="string"></element>
+							<element name="numero_tarjeta" type="string"></element>
+							<element name="fecha_vencimiento" type="string"></element>
+							<element name="codigo_cvc" type="int"></element>
+							<element name="cantidad" type="int"></element>
+						</sequence>
+					</complexType>
+				</element>
 			</sequence>
 		</complexType>
 	</element>
