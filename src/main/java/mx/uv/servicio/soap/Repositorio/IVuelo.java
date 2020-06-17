@@ -19,6 +19,9 @@ public interface IVuelo extends CrudRepository<Vuelo, Integer>
 			@Param("ciudadDestino") String ciudadDestino,
 			@Param("fechaSalida") String fechaSalida);
 	
+	@Query(value = "select * from vuelo v where v.id = :id", nativeQuery = true)
+	Vuelo findFlight(@Param("id") int id);
+	
 	
 	/*//Ver si existe el vuelo de ida y vuelta
 		@Query(value="select idvs from vuelo_sencillo v where v.ciudad_origen = :ciudadOrigen and v.ciudad_destino = :ciudadDestino and v.pais_origen = :paisOrigen and v.pais_destino = :paisDestino and v.fecha_salida = :fechaSalida", nativeQuery= true)

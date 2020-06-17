@@ -7,7 +7,6 @@
 	<element name="CreateFlightRequest">
 		<complexType>
 			<sequence>
-				<element name="id" type="int"></element>
 				<element name="aerolinea" type="string"></element>
 				<element name="codigo_avion" type="string"></element>
 				<element name="fecha_salida" type="string"></element>
@@ -55,7 +54,31 @@
 	<element name="ReadFlightResponse">
 		<complexType>
 			<sequence>
-				<element name="datos" type="string"></element>
+				<element name="id" type="int"></element>
+				<element name="aerolinea" type="string"></element>
+				<element name="codigo_avion" type="string"></element>
+				<element name="fecha_salida" type="string"></element>
+				<element name="hora_salida" type="string"></element>
+				<element name="hora_llegada" type="string"></element>
+				<element name="pais_origen" type="string"></element>
+				<element name="pais_destino" type="string"></element>
+				<element name="ciudad_origen" type="string"></element>
+				<element name="ciudad_destino" type="string"></element>
+				<element name="precio_tarifa_basica" type="double"></element>
+				<element name="precio_tarifa_clasica" type="double"></element>
+				<element name="precio_tarifa_amplus" type="double"></element>
+				<element name="precio_tarifa_flexible" type="double"></element>
+				<element name="precio_tarifa_premier" type="double"></element>
+				<element name="beneficios_tarifa_basica" type="string"></element>
+				<element name="beneficios_tarifa_clasica" type="string"></element>
+				<element name="beneficios_tarifa_amplus" type="string"></element>
+				<element name="beneficios_tarifa_flexible" type="string"></element>
+				<element name="beneficios_tarifa_premier" type="string"></element>
+				<element name="num_asientos_tarifa_basica" type="int"></element>
+				<element name="num_asientos_tarifa_clasica" type="int"></element>
+				<element name="num_asientos_tarifa_amplus" type="int"></element>
+				<element name="num_asientos_tarifa_flexible" type="int"></element>
+				<element name="num_asientos_tarifa_premier" type="int"></element>
 			</sequence>
 		</complexType>
 	</element>
@@ -244,7 +267,13 @@
 	<element name="ReadReservationResponse">
 		<complexType>
 			<sequence>
-				<element name="datos" type="string"></element>
+				<element name="id" type="int"></element>
+				<element name="id_vuelo" type="int"></element>
+				<element name="nombre_cliente" type="string"></element>
+				<element name="numero_tarjeta" type="string"></element>
+				<element name="fecha_vencimiento" type="string"></element>
+				<element name="codigo_cvc" type="int"></element>
+				<element name="cantidad" type="int"></element>
 			</sequence>
 		</complexType>
 	</element>

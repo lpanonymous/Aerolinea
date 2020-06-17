@@ -1,4 +1,5 @@
 package mx.uv.servicio.soap;
+import java.util.Collection;
 import java.util.Optional;
 
 import org.example.nose.ShowSelectedFlightRequest;
@@ -58,7 +59,6 @@ public class EndPoint
 		vuelo.setFecha_salida(peticion.getFechaSalida());
 		vuelo.setHora_llegada(peticion.getHoraLlegada());
 		vuelo.setHora_salida(peticion.getHoraSalida());
-		vuelo.setId(peticion.getId());
 		vuelo.setNum_asientos_tarifa_amplus(peticion.getNumAsientosTarifaAmplus());
 		vuelo.setNum_asientos_tarifa_basica(peticion.getNumAsientosTarifaBasica());
 		vuelo.setNum_asientos_tarifa_clasica(peticion.getNumAsientosTarifaClasica());
@@ -82,18 +82,42 @@ public class EndPoint
 	public ReadFlightResponse rfr(@RequestPayload ReadFlightRequest peticion)
 	{
 	ReadFlightResponse respuesta = new ReadFlightResponse();
-	Optional<Vuelo> vuelo; 	
-	vuelo = ivuelos.findById(peticion.getId());
-	
-	if(vuelo.isPresent()) 
+	Vuelo vuelo = new Vuelo(); 	
+	vuelo = ivuelos.findFlight(peticion.getId());
+	if(vuelo != null) 
 	{
-	respuesta.setDatos(vuelo.get().toString());
+		respuesta.setAerolinea(vuelo.getAerolinea());
+		respuesta.setBeneficiosTarifaAmplus(vuelo.getBeneficios_tarifa_amplus());
+		respuesta.setBeneficiosTarifaBasica(vuelo.getBeneficios_tarifa_basica());
+		respuesta.setBeneficiosTarifaClasica(vuelo.getBeneficios_tarifa_clasica());
+		respuesta.setBeneficiosTarifaFlexible(vuelo.getBeneficios_tarifa_flexible());
+		respuesta.setBeneficiosTarifaPremier(vuelo.getBeneficios_tarifa_premier());
+		respuesta.setCiudadDestino(vuelo.getCiudad_destino());
+		respuesta.setCiudadOrigen(vuelo.getCiudad_origen());
+		respuesta.setCodigoAvion(vuelo.getCodigo_avion());
+		respuesta.setFechaSalida(vuelo.getFecha_salida());
+		respuesta.setHoraLlegada(vuelo.getHora_llegada());
+		respuesta.setHoraSalida(vuelo.getHora_salida());
+		respuesta.setId(vuelo.getId());
+		respuesta.setNumAsientosTarifaAmplus(vuelo.getNum_asientos_tarifa_amplus());
+		respuesta.setNumAsientosTarifaBasica(vuelo.getNum_asientos_tarifa_basica());
+		respuesta.setNumAsientosTarifaClasica(vuelo.getNum_asientos_tarifa_clasica());
+		respuesta.setNumAsientosTarifaFlexible(vuelo.getNum_asientos_tarifa_flexible());
+		respuesta.setNumAsientosTarifaPremier(vuelo.getNum_asientos_tarifa_premier());
+		respuesta.setPaisOrigen(vuelo.getPais_origen());
+		respuesta.setPaisDestino(vuelo.getPais_destino());
+		respuesta.setPrecioTarifaAmplus(vuelo.getPrecio_tarifa_amplus());
+		respuesta.setPrecioTarifaBasica(vuelo.getPrecio_tarifa_basica());
+		respuesta.setPrecioTarifaClasica(vuelo.getPrecio_tarifa_clasica());
+		respuesta.setPrecioTarifaFlexible(vuelo.getPrecio_tarifa_flexible());
+		respuesta.setPrecioTarifaPremier(vuelo.getPrecio_tarifa_premier());
+		return respuesta;
 	}
 	else 
 	{
-	respuesta.setDatos("No existe referencia al vuelo");				
+		return null;				
 	}		
-	return respuesta;
+	
 	}
 	
 	@PayloadRoot(namespace = "http://www.example.org/nose", localPart = "DisplayAllFlightRequest")
@@ -271,16 +295,22 @@ public class EndPoint
 	public ReadReservationResponse rrr(@RequestPayload ReadReservationRequest peticion)
 	{
 		ReadReservationResponse respuesta = new ReadReservationResponse();
-		Optional<Reservacion> reservacion; 	
-		reservacion = ireservaciones.findById(peticion.getId());
+		Reservacion reservacion = new Reservacion(); 	
+		reservacion = ireservaciones.findReservation(peticion.getId());
 		
-		if(reservacion.isPresent()) 
+		if(reservacion!=null) 
 		{
-			respuesta.setDatos(reservacion.get().toString());
+			respuesta.setId(reservacion.getId());
+			respuesta.setNombreCliente(reservacion.getNombre_cliente());
+			respuesta.setNumeroTarjeta(reservacion.getNumero_tarjeta());
+			respuesta.setFechaVencimiento(reservacion.getFecha_vencimiento());
+			respuesta.setCodigoCvc(reservacion.getCodigo_cvc());
+			respuesta.setIdVuelo(reservacion.getId_vuelo());
+			respuesta.setCantidad(reservacion.getCantidad());
 		}
 		else 
 		{
-			respuesta.setDatos("No existe referencia a la reservación");				
+			return null;		
 		}		
 			return respuesta;
 	}
