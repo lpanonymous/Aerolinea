@@ -1,5 +1,7 @@
 package mx.uv.servicio.soap;
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.example.nose.ShowSelectedFlightRequest;
@@ -25,17 +27,21 @@ import org.example.nose.UpdateFlightResponse;
 import org.example.nose.UpdateReservationRequest;
 import org.example.nose.UpdateReservationResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
-
 import mx.uv.servicio.soap.DTO.Reservacion;
 import mx.uv.servicio.soap.DTO.Vuelo;
 import mx.uv.servicio.soap.Repositorio.IReservacion;
 import mx.uv.servicio.soap.Repositorio.IVuelo;
 
 @Endpoint
+@RestController
 public class EndPoint 
 {	
 	///////////////////Inicio CRUD Vuelos////////////////////////
@@ -382,6 +388,221 @@ public class EndPoint
 			respuesta.setDatos("No existe referencia a una reservacion");				
 		}		
 		respuesta.setDatos("Reservacion eliminada correctamente");
+		return respuesta;
+	}
+	
+	/////////////////////////////////////////////REST///////////////////////////////////////////////
+	
+	/////////////////////////////////////////////Vuelos///////////////////////////////////////////////
+	@PostMapping("/crear-vuelo")
+	public String crear_vuelo(@RequestParam Map<String, String> variosParametros)
+	{
+		List <String> list = new ArrayList<String>();
+		for (String value : variosParametros.values()) 
+		{
+			list.add(value);
+		}
+		Vuelo vuelo = new Vuelo();
+		vuelo.setAerolinea(list.get(0));
+		vuelo.setCodigo_avion(list.get(1));
+		vuelo.setFecha_salida(list.get(2));
+		vuelo.setHora_salida(list.get(3));
+		vuelo.setHora_llegada(list.get(4));
+		vuelo.setPais_origen(list.get(5));
+		vuelo.setPais_destino(list.get(6));
+		vuelo.setCiudad_origen(list.get(7));
+		vuelo.setCiudad_destino(list.get(8));
+		vuelo.setPrecio_tarifa_basica(Integer.parseInt(list.get(9)));
+		vuelo.setPrecio_tarifa_clasica(Integer.parseInt(list.get(10)));
+		vuelo.setPrecio_tarifa_amplus(Integer.parseInt(list.get(11)));
+		vuelo.setPrecio_tarifa_flexible(Integer.parseInt(list.get(12)));
+		vuelo.setPrecio_tarifa_premier(Integer.parseInt(list.get(13)));
+		vuelo.setBeneficios_tarifa_basica(list.get(14));
+		vuelo.setBeneficios_tarifa_clasica(list.get(15));
+		vuelo.setBeneficios_tarifa_amplus(list.get(16));
+		vuelo.setBeneficios_tarifa_flexible(list.get(17));
+		vuelo.setBeneficios_tarifa_premier(list.get(18));
+		vuelo.setNum_asientos_tarifa_basica(Integer.parseInt(list.get(19)));
+		vuelo.setNum_asientos_tarifa_clasica(Integer.parseInt(list.get(20)));
+		vuelo.setNum_asientos_tarifa_amplus(Integer.parseInt(list.get(21)));
+		vuelo.setNum_asientos_tarifa_flexible(Integer.parseInt(list.get(22)));
+		vuelo.setNum_asientos_tarifa_premier(Integer.parseInt(list.get(23)));
+		ivuelos.save(vuelo);
+		return "Las variables son: " + variosParametros;
+	}
+	
+	@GetMapping("/buscar-vuelo")
+	public Vuelo buscar_vuelo(@RequestParam(defaultValue = "",value = "id")int id)
+	{	
+		Vuelo vuelo = new Vuelo();
+		vuelo =ivuelos.findFlight(id);
+		return vuelo;
+	}
+	
+	@PostMapping("/actualizar-vuelo")
+	public String actualizar_vuelo(@RequestParam Map<String, String> variosParametros)
+	{
+		List <String> list = new ArrayList<String>();
+		for (String value : variosParametros.values()) 
+		{
+			list.add(value);
+		}
+		
+		Optional<Vuelo> vuelos; 	
+		vuelos = ivuelos.findById(Integer.parseInt(list.get(0)));
+		Vuelo vuelo = new Vuelo();
+		
+		if(vuelos.isPresent())
+		{
+			vuelo.setId(Integer.parseInt(list.get(0)));
+			vuelo.setAerolinea(list.get(1));
+			vuelo.setCodigo_avion(list.get(2));
+			vuelo.setFecha_salida(list.get(3));
+			vuelo.setHora_salida(list.get(4));
+			vuelo.setHora_llegada(list.get(5));
+			vuelo.setPais_origen(list.get(6));
+			vuelo.setPais_destino(list.get(7));
+			vuelo.setCiudad_origen(list.get(8));
+			vuelo.setCiudad_destino(list.get(9));
+			vuelo.setPrecio_tarifa_basica(Integer.parseInt(list.get(10)));
+			vuelo.setPrecio_tarifa_clasica(Integer.parseInt(list.get(11)));
+			vuelo.setPrecio_tarifa_amplus(Integer.parseInt(list.get(12)));
+			vuelo.setPrecio_tarifa_flexible(Integer.parseInt(list.get(13)));
+			vuelo.setPrecio_tarifa_premier(Integer.parseInt(list.get(14)));
+			vuelo.setBeneficios_tarifa_basica(list.get(15));
+			vuelo.setBeneficios_tarifa_clasica(list.get(16));
+			vuelo.setBeneficios_tarifa_amplus(list.get(17));
+			vuelo.setBeneficios_tarifa_flexible(list.get(18));
+			vuelo.setBeneficios_tarifa_premier(list.get(19));
+			vuelo.setNum_asientos_tarifa_basica(Integer.parseInt(list.get(20)));
+			vuelo.setNum_asientos_tarifa_clasica(Integer.parseInt(list.get(21)));
+			vuelo.setNum_asientos_tarifa_amplus(Integer.parseInt(list.get(22)));
+			vuelo.setNum_asientos_tarifa_flexible(Integer.parseInt(list.get(23)));
+			vuelo.setNum_asientos_tarifa_premier(Integer.parseInt(list.get(24)));
+			ivuelos.save(vuelo);
+			return "Vuelo actualizado correctamente";
+		}
+		else 
+		{	
+			return "No existe el vuelo a actualizar";			
+		}		
+	}
+	
+	@GetMapping("/eliminar-vuelo")
+	public String eliminar_vuelo(@RequestParam(defaultValue = "Id de vuelo a eliminar",value = "id_vuelo")int id_vuelo)
+	{
+		Optional<Vuelo> vuelos; 	
+		vuelos = ivuelos.findById(id_vuelo);
+	
+		if(vuelos.isPresent()) 
+		{
+			ivuelos.deleteById(id_vuelo);
+			return "Vuelo eliminado correctamente";
+		}
+		else 
+		{
+			return "No existe referencia al vuelo";			
+		}			
+	}
+	
+	@GetMapping("/mostrar-vuelos")
+	public List<Vuelo> mostrar_vuelos()
+	{
+		Iterable<Vuelo> lista_vuelos = ivuelos.findAll();
+		List <Vuelo> respuesta = new ArrayList<Vuelo>();
+		for(Vuelo lv : lista_vuelos)
+		{
+			respuesta.add(lv);
+		}
+		return respuesta;
+	}
+	
+	/////////////////////////////////////////////Reservaciones///////////////////////////////////////////////
+	
+	@PostMapping("/crear-reservacion")
+	public String crear_reservacion(@RequestParam Map<String, String> variosParametros)
+	{	
+		List <String> list = new ArrayList<String>();
+		for (String value : variosParametros.values()) 
+		{
+			list.add(value);
+		}
+		Reservacion reservacion = new Reservacion();
+		reservacion.setId_vuelo(Integer.parseInt(list.get(0)));
+		reservacion.setNombre_cliente(list.get(1));
+		reservacion.setNumero_tarjeta(list.get(2));
+		reservacion.setFecha_vencimiento(list.get(3));
+		reservacion.setCodigo_cvc(Integer.parseInt(list.get(4)));
+		reservacion.setCantidad(Integer.parseInt(list.get(5)));
+		ireservaciones.save(reservacion);
+		
+		return "Las variables son: " + variosParametros.entrySet();
+	}
+	
+	@GetMapping("/buscar-reservacion")
+	public Reservacion buscar_reservacion(@RequestParam(defaultValue = "",value = "id")int id)
+	{	
+		Reservacion reservacion = new Reservacion();
+		reservacion = ireservaciones.findReservation(id);
+		return reservacion;
+	}
+	
+	@PostMapping("/actualizar-reservacion")
+	public String actualizar_reservacion(@RequestParam Map<String, String> variosParametros)
+	{
+		List <String> list = new ArrayList<String>();
+		for (String value : variosParametros.values()) 
+		{
+			list.add(value);
+		}
+		Optional<Reservacion> reservaciones; 	
+		reservaciones = ireservaciones.findById(Integer.parseInt(list.get(0)));
+		Reservacion reservacion = new Reservacion();
+		
+		if(reservaciones.isPresent()) 
+		{
+			reservacion.setId(Integer.parseInt(list.get(0)));
+			reservacion.setId_vuelo(Integer.parseInt(list.get(1)));
+			reservacion.setNombre_cliente(list.get(2));
+			reservacion.setNumero_tarjeta(list.get(3));
+			reservacion.setCodigo_cvc(Integer.parseInt(list.get(4)));
+			reservacion.setFecha_vencimiento(list.get(5));
+			reservacion.setCantidad(Integer.parseInt(list.get(6)));
+			ireservaciones.save(reservacion);
+			return "Reservación actualizada correctamente";
+		}
+		else 
+		{
+			return "No existe la reservación a actualizar";			
+		}	
+	}
+	
+	@GetMapping("/eliminar-reservacion")
+	public String eliminar_reservacion(@RequestParam(defaultValue = "",value = "id_reservacion")int id_reservacion)
+	{
+		Optional<Reservacion> reservaciones; 	
+		reservaciones = ireservaciones.findById(id_reservacion);
+	
+		if(reservaciones.isPresent()) 
+		{
+			ireservaciones.deleteById(id_reservacion);
+			return "Reservación eliminada correctamente";
+		}
+		else 
+		{
+			return "No existe referencia a la reservación";			
+		}			
+	}
+	
+	@GetMapping("/mostrar-reservaciones")
+	public List<Reservacion> mostrar_reservaciones()
+	{
+		Iterable<Reservacion> lista_reservaciones = ireservaciones.findAll();
+		List <Reservacion> respuesta = new ArrayList<Reservacion>();
+		for(Reservacion lr : lista_reservaciones)
+		{
+			respuesta.add(lr);
+		}
 		return respuesta;
 	}
 }	
