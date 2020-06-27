@@ -34,6 +34,7 @@ _Que cosas necesitas para instalar el software y como instalarlas_
 ```
 
 ## Ejecutando las pruebas ⚙️
+![alt text](https://github.com/lpanonymous/Aerolinea/blob/master/images/boomerang.JPG)
    
 ## Construido con 🛠️
 
