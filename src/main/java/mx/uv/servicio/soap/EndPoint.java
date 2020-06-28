@@ -154,8 +154,8 @@ public class EndPoint
 			datos.setNumAsientosTarifaClasica(lv.getNum_asientos_tarifa_clasica());
 			datos.setNumAsientosTarifaFlexible(lv.getNum_asientos_tarifa_flexible());
 			datos.setNumAsientosTarifaPremier(lv.getNum_asientos_tarifa_premier());
-			datos.setCiudadDestino(lv.getPais_destino());
 			datos.setPaisOrigen(lv.getPais_origen());
+			datos.setPaisDestino(lv.getPais_destino());
 			datos.setPrecioTarifaAmplus(lv.getPrecio_tarifa_amplus());
 			datos.setPrecioTarifaBasica(lv.getPrecio_tarifa_basica());
 			datos.setPrecioTarifaClasica(lv.getPrecio_tarifa_clasica());
