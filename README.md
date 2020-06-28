@@ -34,6 +34,7 @@ _Que cosas necesitas para instalar el software y como instalarlas_
 ```
 
 ## Ejecutando las pruebas ⚙️
+![alt text](https://github.com/lpanonymous/Aerolinea/blob/master/images/boomerang.JPG)
    
 ## Construido con 🛠️
 
@@ -54,9 +55,3 @@ _Menciona a todos aquellos que ayudaron a levantar el proyecto desde sus inicios
 
 * **LUIS PABLO REYES FERNANDEZ**- *Trabajo Inicial* - [lpanonymous](https://github.com/lpanonymous/Aerolinea.git)
 * **ROJANO CACERES JOSE RAFAEL**[tareasR](https://github.com/tareasR)
-
-## Casos de uso
-
-![alt text](https://github.com/lpanonymous/Aerolinea/blob/master/Cliente.JPG)
-
-![alt text](https://github.com/lpanonymous/Aerolinea/blob/master/administrador.JPG)
